@@ -28,6 +28,20 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  // Vérifier si l'utilisateur est défini
+  if (!user) {
+    return (
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold text-gray-800">
+            ExamPro
+          </Link>
+          <Button onClick={() => router.push("/login")}>Se connecter</Button>
+        </div>
+      </header>
+    )
+  }
+
   const handleLogout = async () => {
     setLoading(true)
     try {

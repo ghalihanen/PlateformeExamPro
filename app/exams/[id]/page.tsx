@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { getExamById, submitExamAnswers } from "@/lib/exams"
 import DashboardHeader from "@/components/dashboard-header"
 
+export const dynamic = "force-dynamic"
+
 export default function ExamPage() {
   const params = useParams()
   const router = useRouter()
