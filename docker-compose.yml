@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - API_GATEWAY_URL=http://api-gateway:3001
+    depends_on:
+      - api-gateway
+
+  # API Gateway service
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "3001:3001"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:3002
+      - EXAM_SERVICE_URL=http://exam-service:3003
+      - PORT=3001
+    depends_on:
+      - auth-service
+      - exam-service
+
+  # Authentication microservice
+  auth-service:
+    build:
+      context: ./backend-micro1-auth
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - JWT_SECRET=your_jwt_secret_key
+      - NEON_DATABASE_URL=${NEON_DATABASE_URL}
+    restart: always
+
+  # Exam management microservice
+  exam-service:
+    build:
+      context: ./backend-micro2-exam
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - JWT_SECRET=your_jwt_secret_key
+      - NEON_DATABASE_URL=${NEON_DATABASE_URL}
+    restart: always
